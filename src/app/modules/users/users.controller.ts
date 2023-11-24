@@ -11,24 +11,10 @@ const createUser = async (req: Request, res: Response) => {
 
     const result = await userService.createUserInDatabase(userData);
 
-    const ResultUserData = {
-      userId: result.userId,
-      username: result.username,
-      fullName: {
-        firstName: result.fullName.firstName,
-        lastName: result.fullName.lastName,
-      },
-      age: result.age,
-      email: result.email,
-      isActive: result.isActive,
-      hobbies: result.hobbies,
-      address: result.address,
-    };
-
     res.status(200).json({
       success: true,
       message: 'User created successfully!',
-      data: ResultUserData,
+      data: result,
     });
   } catch (error) {
     res.status(500).json({
@@ -147,6 +133,35 @@ const AddOrders = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userService.getAllOrdersDb(userId);
+
+    if (!result?.isUserExists(userId)) {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'User not found',
+      error,
+    });
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
@@ -154,4 +169,5 @@ export const userController = {
   updateUser,
   deleteUser,
   AddOrders,
+  getAllOrders,
 };

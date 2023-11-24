@@ -63,6 +63,14 @@ const userSchema = new Schema<TUser, UserMethodModel, UserMethods>({
   ],
 });
 
+userSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
+
+  delete userObject.password;
+
+  return userObject;
+};
+
 userSchema.methods.isUserExists = async function (id: string) {
   const existingUser = await UserMOdel.findOne({ id });
   return existingUser;

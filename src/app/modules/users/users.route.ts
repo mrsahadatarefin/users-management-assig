@@ -8,6 +8,7 @@ route.post('/', userController.createUser);
 route.get('/:userId', userController.getSingleUser);
 route.put('/:userId', userController.updateUser);
 route.delete('/:userId', userController.deleteUser);
+route.get('/:userId/orders', userController.getAllOrders);
 
 route.put('/:userId/orders', userController.AddOrders);
 

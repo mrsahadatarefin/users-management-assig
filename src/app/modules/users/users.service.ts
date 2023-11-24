@@ -46,6 +46,10 @@ const AddOrderInDatabase = async (userId: string, orderData: TUser) => {
 
   return result;
 };
+const getAllOrdersDb = async (userId: string) => {
+  const result = await UserMOdel.findOne({ userId }, { orders: 1, _id: 0 });
+  return result;
+};
 
 export const userService = {
   createUserInDatabase,
@@ -54,4 +58,5 @@ export const userService = {
   updateUserFromDatabase,
   deleteUserFromDatabase,
   AddOrderInDatabase,
+  getAllOrdersDb,
 };
