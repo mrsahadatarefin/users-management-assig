@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { TUser } from './users.interface';
+import { TUser, UserMethods, UserMethodModel } from './users.interface';
 import config from '../../config';
 
-const userSchema = new Schema<TUser>({
+const userSchema = new Schema<TUser, UserMethodModel, UserMethods>({
   userId: {
     type: Number,
     unique: true,
@@ -30,6 +30,7 @@ const userSchema = new Schema<TUser>({
   },
   age: {
     type: Number,
+    required: true,
   },
   email: {
     type: String,
@@ -48,13 +49,23 @@ const userSchema = new Schema<TUser>({
   },
   orders: [
     {
-      id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Orders',
+      productName: {
+        type: String,
+      },
+      price: {
+        type: Number,
+      },
+      quantity: {
+        type: Number,
       },
     },
   ],
 });
+
+userSchema.methods.isUserExists = async function (id: string) {
+  const existingUser = await UserMOdel.findOne({ id });
+  return existingUser;
+};
 
 // middleware
 
@@ -74,6 +85,6 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-const UserMOdel = model<TUser>('User', userSchema);
+const UserMOdel = model<TUser, UserMethodModel>('User', userSchema);
 
 export default UserMOdel;
