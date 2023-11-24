@@ -11,10 +11,24 @@ const createUser = async (req: Request, res: Response) => {
 
     const result = await userService.createUserInDatabase(userData);
 
+    const ResultUserData = {
+      userId: result.userId,
+      username: result.username,
+      fullName: {
+        firstName: result.fullName.firstName,
+        lastName: result.fullName.lastName,
+      },
+      age: result.age,
+      email: result.email,
+      isActive: result.isActive,
+      hobbies: result.hobbies,
+      address: result.address,
+    };
+
     res.status(200).json({
       success: true,
       message: 'User created successfully!',
-      data: result,
+      data: ResultUserData,
     });
   } catch (error) {
     res.status(500).json({
