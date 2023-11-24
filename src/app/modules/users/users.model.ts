@@ -38,6 +38,7 @@ const userSchema = new Schema<TUser, UserMethodModel, UserMethods>({
   },
   isActive: {
     type: Boolean,
+    default: true,
   },
   hobbies: {
     type: [String],

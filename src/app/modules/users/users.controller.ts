@@ -115,14 +115,22 @@ const deleteUser = async (req: Request, res: Response) => {
 };
 
 const AddOrders = async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const orderData: TUser = await req.body;
-  const result = await userService.AddOrderInDatabase(userId, orderData);
-  res.status(200).json({
-    success: true,
-    message: 'Order created successfully!',
-    data: result,
-  });
+  try {
+    const { userId } = req.params;
+    const orderData: TUser = req.body;
+    const result = await userService.AddOrderInDatabase(userId, orderData);
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'User not found',
+      error,
+    });
+  }
 };
 
 export const userController = {
