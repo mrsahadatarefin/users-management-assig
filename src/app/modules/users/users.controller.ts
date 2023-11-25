@@ -48,7 +48,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
 
     const result = await userService.getSingleUserFromDatabase(userId);
-    if (result && !result?.isUserExists(userId)) {
+    if (await !result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -74,7 +74,7 @@ const updateUser = async (req: Request, res: Response) => {
     const userData: TUser = req.body;
 
     const result = await userService.updateUserFromDatabase(userId, userData);
-    if (result && !result?.isUserExists(userId)) {
+    if (await !result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -104,7 +104,7 @@ const deleteUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     const result = await userService.deleteUserFromDatabase(userId);
-    if (result && !result?.isUserExists(userId)) {
+    if (await !result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -134,7 +134,7 @@ const AddOrders = async (req: Request, res: Response) => {
     const orderData: TUser = req.body;
 
     const result = await userService.AddOrderInDatabase(userId, orderData);
-    if (result && !result?.isUserExists(userId)) {
+    if (await !result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -163,7 +163,7 @@ const getAllOrders = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     const result = await userService.getAllOrdersDb(userId);
-    if (result && !result?.isUserExists(userId)) {
+    if (await !result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
