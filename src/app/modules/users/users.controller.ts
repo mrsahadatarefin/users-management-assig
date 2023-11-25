@@ -129,24 +129,14 @@ const AddOrders = async (req: Request, res: Response) => {
 const getAllOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    if (await UserMOdel.isUserExists(userId)) {
-      const result = await userService.getAllOrdersDb(userId);
 
-      res.status(200).json({
-        success: true,
-        message: 'Order fetched successfully!',
-        data: result,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'User not found',
-        error: {
-          code: 404,
-          description: 'User not found!',
-        },
-      });
-    }
+    const result = await userService.getAllOrdersDb(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

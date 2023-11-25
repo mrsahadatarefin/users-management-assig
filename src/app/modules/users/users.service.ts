@@ -59,7 +59,14 @@ const TotalPriceOrdersFromDb = async (Id: string) => {
   const result = await UserMOdel.aggregate([
     { $match: { userId: id } },
     { $unwind: '$orders' },
-    { $group: { _id: '$orders', totalPrice: { $sum: '$orders.price' } } },
+    {
+      $group: {
+        _id: null,
+        totalPrice: {
+          $sum: { $multiply: ['$orders.price', '$orders.quantity'] },
+        },
+      },
+    },
   ]);
 
   return result;
