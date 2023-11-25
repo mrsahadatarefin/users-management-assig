@@ -48,7 +48,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
 
     const result = await userService.getSingleUserFromDatabase(userId);
-    if (await !result?.isUserExists(userId)) {
+    if (!result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -57,12 +57,13 @@ const getSingleUser = async (req: Request, res: Response) => {
           description: 'User not found!',
         },
       });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User finds successfully!',
+        data: result,
+      });
     }
-    res.status(200).json({
-      success: true,
-      message: 'User finds successfully!',
-      data: result,
-    });
   } catch (error) {
     console.log(error);
   }
@@ -74,7 +75,7 @@ const updateUser = async (req: Request, res: Response) => {
     const userData: TUser = req.body;
 
     const result = await userService.updateUserFromDatabase(userId, userData);
-    if (await !result?.isUserExists(userId)) {
+    if (!result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -82,6 +83,12 @@ const updateUser = async (req: Request, res: Response) => {
           code: 404,
           description: 'User not found!',
         },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User finds successfully!',
+        data: result,
       });
     }
 
@@ -104,7 +111,7 @@ const deleteUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     const result = await userService.deleteUserFromDatabase(userId);
-    if (await !result?.isUserExists(userId)) {
+    if (!result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -112,6 +119,12 @@ const deleteUser = async (req: Request, res: Response) => {
           code: 404,
           description: 'User not found!',
         },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User finds successfully!',
+        data: result,
       });
     }
     res.status(200).json({
@@ -134,7 +147,7 @@ const AddOrders = async (req: Request, res: Response) => {
     const orderData: TUser = req.body;
 
     const result = await userService.AddOrderInDatabase(userId, orderData);
-    if (await !result?.isUserExists(userId)) {
+    if (!result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -143,12 +156,13 @@ const AddOrders = async (req: Request, res: Response) => {
           description: 'User not found!',
         },
       });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User finds successfully!',
+        data: result,
+      });
     }
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully!',
-      data: result,
-    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -163,7 +177,7 @@ const getAllOrders = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     const result = await userService.getAllOrdersDb(userId);
-    if (await !result?.isUserExists(userId)) {
+    if (!result?.isUserExists(userId)) {
       res.status(500).json({
         success: false,
         message: 'User not found',
@@ -171,6 +185,12 @@ const getAllOrders = async (req: Request, res: Response) => {
           code: 404,
           description: 'User not found!',
         },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User finds successfully!',
+        data: result,
       });
     }
     res.status(200).json({
