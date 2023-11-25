@@ -1,40 +1,33 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { TUser, UserMethodModel } from './users.interface';
+import { TUser, UserMethodModel, UserMethods } from './users.interface';
 import config from '../../config';
 
-const userSchema = new Schema<TUser, UserMethodModel>({
+const userSchema = new Schema<TUser, UserMethodModel, UserMethods>({
   userId: {
     type: Number,
     unique: true,
-    required: true,
   },
   username: {
     type: String,
     unique: true,
-    required: true,
   },
   password: {
     type: String,
-    required: true,
   },
   fullName: {
     firstName: {
       type: String,
-      required: true,
     },
     lastName: {
       type: String,
-      required: true,
     },
   },
   age: {
     type: Number,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
   },
   isActive: {
     type: Boolean,
@@ -72,15 +65,15 @@ userSchema.methods.toJSON = function () {
 };
 
 //creating a custom static methods
-userSchema.statics.isUserExists = async function (id: number) {
-  const existingUser = await UserMOdel.findOne({ id });
-  return existingUser;
-};
-
-// userSchema.methods.isUserExists = async function (id: string) {
+// userSchema.statics.isUserExists = async function (id: number) {
 //   const existingUser = await UserMOdel.findOne({ id });
 //   return existingUser;
 // };
+
+userSchema.methods.isUserExists = async function (id: string) {
+  const existingUser = await UserMOdel.findOne({ id });
+  return existingUser;
+};
 
 // middleware
 

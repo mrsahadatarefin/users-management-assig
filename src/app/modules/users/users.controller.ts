@@ -3,7 +3,6 @@ import { userService } from './users.service';
 import userSchemaValidate from './users.validate';
 
 import { TUser } from './users.interface';
-import UserMOdel from './users.model';
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -48,8 +47,17 @@ const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
-    const result = await userService.getSingleUserFromDatabase(Number(userId));
-
+    const result = await userService.getSingleUserFromDatabase(userId);
+    if (result && !result?.isUserExists(userId)) {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'User finds successfully!',
@@ -65,10 +73,17 @@ const updateUser = async (req: Request, res: Response) => {
 
     const userData: TUser = req.body;
 
-    const result = await userService.updateUserFromDatabase(
-      Number(userId),
-      userData,
-    );
+    const result = await userService.updateUserFromDatabase(userId, userData);
+    if (result && !result?.isUserExists(userId)) {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
 
     res.status(200).json({
       success: true,
@@ -88,7 +103,17 @@ const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    const result = await userService.deleteUserFromDatabase(Number(userId));
+    const result = await userService.deleteUserFromDatabase(userId);
+    if (result && !result?.isUserExists(userId)) {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'User deleted successfully!',
@@ -108,10 +133,17 @@ const AddOrders = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const orderData: TUser = req.body;
 
-    const result = await userService.AddOrderInDatabase(
-      Number(userId),
-      orderData,
-    );
+    const result = await userService.AddOrderInDatabase(userId, orderData);
+    if (result && !result?.isUserExists(userId)) {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
@@ -131,7 +163,16 @@ const getAllOrders = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     const result = await userService.getAllOrdersDb(userId);
-
+    if (result && !result?.isUserExists(userId)) {
+      res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'Order fetched successfully!',

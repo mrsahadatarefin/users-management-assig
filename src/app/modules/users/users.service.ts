@@ -23,7 +23,7 @@ const getUsersFromDatabase = async () => {
   return result;
 };
 
-const getSingleUserFromDatabase = async (userId: number) => {
+const getSingleUserFromDatabase = async (userId: string) => {
   const result = await UserMOdel.findOne(
     { userId },
     { password: 0, _id: 0, orders: 0 },
@@ -31,18 +31,21 @@ const getSingleUserFromDatabase = async (userId: number) => {
   return result;
 };
 
-const updateUserFromDatabase = async (userId: number, userData: TUser) => {
-  const result = await UserMOdel.updateOne({ userId }, { $set: userData });
+const updateUserFromDatabase = async (userId: string, userData: TUser) => {
+  const result = await UserMOdel.findOneAndUpdate(
+    { userId },
+    { $set: userData },
+  );
   return result;
 };
-const deleteUserFromDatabase = async (userId: number) => {
-  const result = await UserMOdel.deleteOne({ userId });
+const deleteUserFromDatabase = async (userId: string) => {
+  const result = await UserMOdel.findOneAndDelete({ userId });
 
   return result;
 };
 
-const AddOrderInDatabase = async (userId: number, orderData: TUser) => {
-  const result = await UserMOdel.updateOne(
+const AddOrderInDatabase = async (userId: string, orderData: TUser) => {
+  const result = await UserMOdel.findOneAndUpdate(
     { userId },
     { $push: { orders: orderData } },
   );
