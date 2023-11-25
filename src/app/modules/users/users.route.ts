@@ -9,6 +9,7 @@ route.get('/:userId', userController.getSingleUser);
 route.put('/:userId', userController.updateUser);
 route.delete('/:userId', userController.deleteUser);
 route.get('/:userId/orders', userController.getAllOrders);
+route.get('/:userId/orders/total-price', userController.TotalPriceOrders);
 
 route.put('/:userId/orders', userController.AddOrders);
 

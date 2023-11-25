@@ -50,6 +50,14 @@ const getAllOrdersDb = async (userId: string) => {
   const result = await UserMOdel.findOne({ userId }, { orders: 1, _id: 0 });
   return result;
 };
+const TotalPriceOrdersFromDb = async (userId: string) => {
+  console.log(userId);
+  const result = await UserMOdel.aggregate([
+    { $match: { userId: { userId } } },
+  ]);
+  console.log(result);
+  return result;
+};
 
 export const userService = {
   createUserInDatabase,
@@ -59,4 +67,5 @@ export const userService = {
   deleteUserFromDatabase,
   AddOrderInDatabase,
   getAllOrdersDb,
+  TotalPriceOrdersFromDb,
 };

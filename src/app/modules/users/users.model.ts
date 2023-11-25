@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { TUser, UserMethods, UserMethodModel } from './users.interface';
+import { TUser, UserMethodModel } from './users.interface';
 import config from '../../config';
 
-const userSchema = new Schema<TUser, UserMethodModel, UserMethods>({
+const userSchema = new Schema<TUser, UserMethodModel>({
   userId: {
     type: Number,
     unique: true,
@@ -71,10 +71,16 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
-userSchema.methods.isUserExists = async function (id: string) {
+//creating a custom static methods
+userSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await UserMOdel.findOne({ id });
   return existingUser;
 };
+
+// userSchema.methods.isUserExists = async function (id: string) {
+//   const existingUser = await UserMOdel.findOne({ id });
+//   return existingUser;
+// };
 
 // middleware
 

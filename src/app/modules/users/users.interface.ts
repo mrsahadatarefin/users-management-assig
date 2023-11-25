@@ -27,8 +27,10 @@ export type TUser = {
   orders?: Orders[];
 };
 
-export type UserMethods = {
-  isUserExists(id: string): Promise<TUser | null>;
-};
+// export type UserMethods = {
+//   isUserExists(id: string): Promise<TUser | null>;
+// };
 
-export type UserMethodModel = Model<TUser, Record<string, never>, UserMethods>;
+export interface UserMethodModel extends Model<TUser> {
+  isUserExists(id: string): Promise<TUser | null>;
+}
