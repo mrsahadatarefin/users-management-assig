@@ -23,22 +23,25 @@ const getUsersFromDatabase = async () => {
   return result;
 };
 
-const getSingleUserFromDatabase = async (userId: string) => {
-  const result = await UserMOdel.findOne({ userId }, { password: 0, _id: 0 });
+const getSingleUserFromDatabase = async (userId: number) => {
+  const result = await UserMOdel.findOne(
+    { userId },
+    { password: 0, _id: 0, orders: 0 },
+  );
   return result;
 };
 
-const updateUserFromDatabase = async (userId: string, userData: TUser) => {
+const updateUserFromDatabase = async (userId: number, userData: TUser) => {
   const result = await UserMOdel.updateOne({ userId }, { $set: userData });
   return result;
 };
-const deleteUserFromDatabase = async (userId: string) => {
+const deleteUserFromDatabase = async (userId: number) => {
   const result = await UserMOdel.deleteOne({ userId });
 
   return result;
 };
 
-const AddOrderInDatabase = async (userId: string, orderData: TUser) => {
+const AddOrderInDatabase = async (userId: number, orderData: TUser) => {
   const result = await UserMOdel.updateOne(
     { userId },
     { $push: { orders: orderData } },
@@ -50,12 +53,15 @@ const getAllOrdersDb = async (userId: string) => {
   const result = await UserMOdel.findOne({ userId }, { orders: 1, _id: 0 });
   return result;
 };
-const TotalPriceOrdersFromDb = async (userId: string) => {
-  console.log(userId);
+const TotalPriceOrdersFromDb = async (Id: string) => {
+  const id = Number(Id);
+
   const result = await UserMOdel.aggregate([
-    { $match: { userId: { userId } } },
+    { $match: { userId: id } },
+    { $unwind: '$orders' },
+    { $group: { _id: '$orders', totalPrice: { $sum: '$orders.price' } } },
   ]);
-  console.log(result);
+
   return result;
 };
 
